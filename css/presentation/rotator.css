@@ -61,6 +61,21 @@
     font-size: 60px;
 }
 
+/* Position the upload button (underneath close) */
+/* spfellers */	
+.overlay .uploadbtn {
+    position: absolute;
+    top: 125px;
+    right: 54px;
+    font-size: 35px;
+}
+
+.overlay .uploadbtn:hover  {
+	color: white;
+	cursor: pointer;
+}
+
+
 /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
 @media screen and (max-height: 450px) {
     .overlay a {font-size: 20px}
@@ -69,6 +84,13 @@
         top: 15px;
         right: 35px;
     }
+    /* spfellers */	
+    .overlay .uploadbtn {
+    	position: absolute;
+    	top: 75px;
+   		right: 42px;
+    	font-size: 25px;
+	}
 }
 
 /*.start-stop-button {
