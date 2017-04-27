@@ -90,11 +90,15 @@ var users = {
 		dotsCount = isMobile ? (isAndroid ? 40 : 60) : (isChrome ? 175 : 125);
 	}
 	
-	console.log("userslength = "  + users.length);
-	console.log("userslength = " + users[1].first);
 	for (var i = 1; i < 26; i++) {
-		dotsHtml += "<div class='dot'><span class='dotName'>" + users[i].first + " " + users[i].last + "</span></br>" +
-		"<span class='dotName'>" + users[i].info + "</span></div>";
+		//check if line is going to run off div
+		if(users[i].info.split(' ')[0].length < 19){
+			dotsHtml += "<div class='dot'><span class='dotName'>" + users[i].first + " " + users[i].last + "</span></br>" +
+			"<span class='dotName'>" + users[i].info + "</span></div>";
+		}else{
+			dotsHtml += "<div class='dot'><span class='dotName'>" + users[i].first + " " + users[i].last + "</span></br>" +
+			"<span class='dotInfo'>" + users[i].info + "</span></div>";
+		}
 	}
 
 	$dots = $(dotsHtml);
@@ -113,7 +117,7 @@ var users = {
 		screenHeight = window.screen.availHeight,
 		chromeHeight = screenHeight - (document.documentElement.clientHeight || screenHeight);
 
-	var translateZMin = -75,
+	var translateZMin = -45,
 		translateZMax = 40;
 
 	var containerAnimationMap = {
@@ -136,7 +140,7 @@ var users = {
     *****************/
 
     /* Fade out the welcome message. */
-	$welcome.velocity({ opacity: [ 0, 0.65 ] }, { display: "none", delay: 3500, duration: 1100 });
+	$welcome.velocity({ opacity: [ 0, 0.65 ] }, { delay: 3500, duration: 1100 });
 
 	/* Animate the dots' container. */
 	$container
@@ -153,6 +157,7 @@ var users = {
 function putDots(){
 	/* Animate the dots. */
 	$dots
+	.velocity({ opacity: [ 0, 0.65 ] }, { duration: 500 })
 		.velocity({ 
 			translateX: [ 
 				function() { return "+=" + r(-screenWidth/2.5, screenWidth/2.5) },
@@ -170,8 +175,8 @@ function putDots(){
 				function() { return Math.random() },
 				function() { return Math.random() + 0.2 }
 			]
-		}, { duration: 15000 })
-		.velocity("reverse", { easing: "easeInQuad" }, { duration: 2000, complete: function() { 
+		}, { duration: 15000, complete: function() { 
+			//return to start of anim
 			putDots();
 		}
 	})
