@@ -48,10 +48,10 @@ $('#upload-input').on('change', function(){
         	  var newUser = obj[i];
         	  toDict[i] = new BasicUser(i, newUser.first_name, newUser.last_name, newUser.info, Date.now());
           }
-          //need to clear orderedUsers or else the code breaks
+          //need to clear orderedUsers or else the code 
           orderedUsers = [];
-          //setupSlotMachine with our new users
-          setupSlotMachine(toDict);
+          users = toDict;
+          setupSlotMachine(users);
           console.log("NEWUSERS %j", toDict);
       },
       xhr: function() {
