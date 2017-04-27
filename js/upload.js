@@ -40,6 +40,19 @@ $('#upload-input').on('change', function(){
       success: function(data){
     	  alert("upload successful!");
           console.log('upload successful!\n data = %j', data.data);
+          
+          var obj = JSON.parse(data.data);
+          var toDict = {};
+          //convert the data into a dictionary object to match previous code
+          for(var i = 0; i < obj.length; i ++ ){
+        	  var newUser = obj[i];
+        	  toDict[i] = new BasicUser(i, newUser.first_name, newUser.last_name, newUser.info, Date.now());
+          }
+          //need to clear orderedUsers or else the code breaks
+          orderedUsers = [];
+          //setupSlotMachine with our new users
+          setupSlotMachine(toDict);
+          console.log("NEWUSERS %j", toDict);
       },
       xhr: function() {
         // create an XMLHttpRequest
