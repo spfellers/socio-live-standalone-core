@@ -33,9 +33,6 @@ function BasicUser(id, first, last, info, join_time) {
 /*
  * Function to open up the upload
  */
-function uploadCSV(){
-	console.log("test");
-}
 
 
 function getRandomInterval() {
