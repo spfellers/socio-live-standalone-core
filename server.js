@@ -22,13 +22,28 @@ app.post('/upload', function(req, res){
 
 	  // store all uploads in the /uploads directory
 	  form.uploadDir = path.join(__dirname, '/uploads');
+	  
 
 	  // every time a file has been uploaded successfully,
 	  // rename it to it's orignal name
 	  form.on('file', function(field, file) {
-	    fs.rename(file.path, path.join(form.uploadDir, file.name));
+		  fs.rename(file.path, path.join(form.uploadDir, file.name));
 	  });
-
+	  /*
+	   * handle uploads with same name
+	  form.on('file', function(field, file) {
+		  fs.stat(path.join(form.uploadDir, file.name), function(err, stat) {
+			    if(err == null) {
+			        console.log('File exists');
+			    } else if(err.code == 'ENOENT') {
+			        // file does not exist
+			    	fs.rename(file.path, path.join(form.uploadDir, file.name));
+			    	console.log('File does not exist');
+			    }
+			});
+	  });
+	  */
+	  
 	  // log any errors that occur
 	  form.on('error', function(err) {
 	    console.log('An error has occured: \n' + err);
@@ -36,7 +51,7 @@ app.post('/upload', function(req, res){
 
 	  // once all the files have been uploaded, send a response to the client
 	  form.on('end', function() {
-	    res.end('success');
+	    res.json({state:'success'});
 	  });
 
 	  // parse the incoming request containing the form data

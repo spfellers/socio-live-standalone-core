@@ -22,7 +22,11 @@ $('#upload-input').on('change', function(){
     // loop through all the selected files and add them to the formData object
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
-
+      /* check to see if .csv is extension */
+      if(file.name.length - file.name.indexOf(".csv") != 4){
+    	  alert("file must be of type \".csv\"");
+    	  return;
+      }
       // add the files to formData object for the data payload
       formData.append('uploads[]', file, file.name);
     }
@@ -34,6 +38,7 @@ $('#upload-input').on('change', function(){
       processData: false,
       contentType: false,
       success: function(data){
+    	  alert("upload successful!");
           console.log('upload successful!\n' + data);
       },
       xhr: function() {
