@@ -102,7 +102,8 @@ var users = {
 	} else {
 		dotsCount = isMobile ? (isAndroid ? 40 : 60) : (isChrome ? 175 : 125);
 	}
-	
+
+	function initDots(){
 	for (var i = 1; i < 26; i++) {
 		//check if line is going to run off div
 		if(users[i].info.split(' ')[0].length < 19){
@@ -117,7 +118,9 @@ var users = {
 			$dotArr[i] = $(currDot);
 		}
 	}
-
+	}
+	initDots();
+	
 	$dots = $(dotsHtml);
 
 	$count.html(dotsCount);
@@ -138,13 +141,13 @@ var users = {
 		translateZMax = 40;
 
 	var containerAnimationMap = {
-			perspective: [ 215, 40 ],
+			perspective: [ 100, 40 ],
 			opacity: [ 0.90, 0.55 ]
 		};
 
 	/* IE10+ produce odd glitching issues when you rotateZ on a parent element subjected to 3D transforms. */
 	if (!isIE) {
-		containerAnimationMap.rotateZ = [ 5, 0 ];
+		containerAnimationMap.rotateZ = [ 0, 0 ];
 	}
 
 	/* Ensure the user is full-screened; this demo's translations are relative to screen width, not window width. */
@@ -155,7 +158,7 @@ var users = {
 	/*****************
         Animation
     *****************/
-
+	
     /* Fade out the welcome message. */
 	$welcome.velocity({ opacity: [ 0, 0.65 ] }, { delay: 3500, duration: 1100 });
 	//onHit();
@@ -163,141 +166,159 @@ var users = {
 	function putDots(){
 	/* Animate the dots' container. */
 	$container
-		.css("perspective-origin", screenWidth/2 + "px " + ((screenHeight * 0.45) - chromeHeight) + "px")
-		.velocity(containerAnimationMap, { duration: 800, loop: 1, delay: 1050 });
+		.css("perspective-origin", screenWidth/2 + "px " + ((screenHeight * 0.25) - chromeHeight) + "px")
+		.velocity(containerAnimationMap, { duration: 1000,  delay: 1050 });
 
 	/* Special visual enhancement for WebKit browsers, which are faster at box-shadow manipulation. */
 	if (isWebkit) {
 		$dots.css("boxShadow", "0px 0px 4px 0px #4bc2f1");
 	}
-	//onHit();
-	//getPos();
+
 	/* Animate the dots. */
-	/*
-	$dotArr[1].
-	velocity({ 
-		translateX: [ 
-			function() { return "+=" + 5 }
-		],
-		translateY: [
-			function() { return "+=" + 5 },
-		],
-		opacity: [ 
-			1
-		]
-	})
-	.appendTo($container);
-	var b = 6
-	$dotArr[2].
-	velocity({ 
-		translateX: [ 
-			function() { return "+=" + 5 }
-		],
-		translateY: [
-			function() { return "+=" + 105 },
-		],
-		opacity: [ 
-			1
-		]
-	})
-	.appendTo($container);
-	var currY;
-	$dotArr[3].
-	velocity({ 
-		translateX: [ 
-			function() { return "+=" + 5 }
-		],
-		translateY: [
-			function() { return "+=" + 205 }
-		],
-		opacity: [ 
-			1
-		]
-	})
-	.appendTo($container);
-	$dotArr[3].
-	velocity({ 
-		translateX: [ 
-			function() { return "+=" + 1005 }
-		],
-		translateY: [
-			function() { return "+=" + 0 }
-		],
-		opacity: [ 
-			1
-		]
-	})
-	.appendTo($container);
-	*/
 	
-	$dots
-	//.velocity({ opacity: [ 0.35, 0.65 ] }, { duration: 500 })
-		.velocity({ 
-			translateX: [ 
-				function() { return "+=" + r(-screenWidth/2.5, screenWidth/2.5) },
-				function() { return r(0, screenWidth) }
-			],
-			translateY: [
-				function() { return "+=" + r(-screenHeight/2.75, screenHeight/2.75) },
-				function() { return r(0, screenHeight) },
-			],
-			translateZ: [
-							function() { return "+=" + r(translateZMin, translateZMax) },
-							function() { return r(translateZMin, translateZMax) }
-			],
-			opacity: [ 
-				function() { return Math.random() + 0.1 },
-				function() { return Math.random() + 0.2 }
-			]
-		}, { duration: 15000, loop: 100, complete: function() { 
-			//return to start of anim
-			putDots();
-		}
-	})
-	.appendTo($container);
+	
+    for(var i = 1; i < 26; i++){
+        $dotArr[i]
+        //.velocity({ opacity: [ 0.35, 0.65 ] }, { duration: 500 })
+            .velocity({ 
+                translateX: [ 
+                    function() { return "+=" + r(-screenWidth/2.5, screenWidth/2.5) },
+                    function() { return r(0, screenWidth) }
+                ],
+                translateY: [
+                    function() { return "+=" + r(-screenHeight/2.75, screenHeight/2.75) },
+                    function() { return r(0, screenHeight) },
+                ],
+                translateZ: [
+                                function() { return "+=" + r(translateZMin, translateZMax) },
+                                function() { return r(translateZMin, translateZMax) }
+                ],
+                opacity: [ 
+                    function() { return Math.random() + 0.1 },
+                    function() { return Math.random() + 0.2 }
+                ]
+            },{ duration: 2000, loop: 1, complete: function(elements) { 
+               // putDots();
+            	//onHit();
+            	onHit(elements);
+            },
+        })
+        .appendTo($container);
+    }
 	
 
-	
 }
+
 	
-	function onHit(){
-		for(var i = 1; i < 26; i++){
-			console.log(i);
-			$dotArr[i].
-			velocity({ 
-				translateX: [ 
-					function() { 
-						if(i % 2 == 0){
-							var temp = screenWidth - 170;
-							console.log("temp = " + temp);
-							return "+=" + temp; 
-						}else{
-							return "+=" + 5;
+	function onHit(ele){
+		console.log("onHit")
+
+		//initDots();
+		//$container
+		//.css("perspective-origin", screenWidth/2 + "px " + ((screenHeight * 0.25) - chromeHeight) + "px");
+			//console.log(j);
+			//$dotArr = [];
+		
+			$(ele)
+				.velocity({ 
+					translateX: [ 
+						function() { 
+							if(ele[0].id % 2 == 0){
+								var temp = screenWidth - 170;
+								//console.log("X temp = " + temp);
+								return temp; 
+							}else{
+								return 5;
+							}
 						}
+					],
+					translateY: [
+						function() { 
+							//80 is height of box
+							//console.log("i = " + j);
+							var temp = (Math.ceil(ele[0].id/2) - 1) * (100);
+							//console.log("Y temp = " + temp);
+							return temp;
+						}
+					],
+					translateZ: [
+					    -75
+					],
+					opacity: [ 
+						1
+					]
+				}, {duration: 3000, complete: function(elements) { 
+					doNext(elements); 
 					}
-				],
-				translateY: [
+				})
+			.appendTo($container);
+
+
+	}
+	
+	function doNext(elements){
+		console.log("doNext");
+		console.log(elements);
+		$(elements)
+            .velocity({ 
+                translateY: [
 					function() { 
 						//80 is height of box
-						var temp = (Math.ceil(i/2) - 1) * (100);
-						console.log("temp = " + temp);
-						return "+=" + temp;
+						if(elements[0].id % 2 == 0){
+							var temp = ((Math.ceil(elements[0].id/2) - 1) * (200) - 280);
+						}else{
+							var temp = ((Math.ceil(elements[0].id/2) - 1) * (200) - 180);
+						}
+						return temp;
 					}
-				],
-				translateZ: [
-				    function() { 
-				    //based on people
-				    var temp = (-1 * 50);
-					return "+=" + temp;
-					}
-				],
-				opacity: [ 
+                ],
+                translateZ: [
+                             -200
+                ]
+            },{ duration: 4000, complete: function(elements) { 
+				bringTogether(elements); 
+			}})
+        .appendTo($container);
+		
+	}
+	
+	function bringTogether(elements){
+		//console.log("doNext");
+		console.log(elements);
+		$(elements)
+            .velocity({ 
+                translateX: [
+					screenWidth/2
+                ]
+            },{ duration: 3000, complete: function(elements) { 
+				zoomIn(elements); 
+			}})
+        .appendTo($container);
+		
+	}
+	
+	function zoomIn(elements){
+		//console.log("doNext");
+		console.log(elements);
+		$(elements)
+            .velocity({ 
+                translateZ: [
 					1
-				]
-			})
-			.appendTo($container);
-		}
-
+                ],
+                backgroundColor: [
+					function(){
+						if(elements[0].id == 8){
+							return "#174ADF"
+						}
+					}
+                ]
+                
+                
+            },{ duration: 3000, complete: function(elements) { 
+				//doNextAgain(elements); 
+			}})
+        .appendTo($container);
+		
 	}
 	function getPos() {
 		var el = document.getElementsByClassName('dot');

@@ -200,6 +200,13 @@ function openAttendeeDrawing() {
   })
 }
 
+function openMine(){
+	//document.getElementById('container1').style.width = "100%";
+	console.log("hello");
+	createDots();
+	putDots();
+}
+
 function setupSlotMachine(usersDictionary) {
   var $carousel = $('#carousel');
   var current = 0;
@@ -244,6 +251,7 @@ var $industriesList = $('#industriesList');
 function setupActions() {
   $settingsPanel.find('b[name="attendee_drawing"]').on('click', function(e) {
     openAttendeeDrawing();
+	 // openMine();
   });
 
   $settingsPanel.find('b[name="fullscreen"]').on('click', toggleFullScreen);
@@ -388,6 +396,12 @@ $(document).ready(function() {
     });
 
     $(".container").on('click', function() {
+        if($slideout.has('hoverClass')) {
+            $slideout.removeClass('hoverClass');
+        }
+    });
+    
+    $(".container1").on('click', function() {
         if($slideout.has('hoverClass')) {
             $slideout.removeClass('hoverClass');
         }
