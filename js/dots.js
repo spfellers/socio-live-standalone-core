@@ -265,9 +265,9 @@ var users = {
 					function() { 
 						//80 is height of box
 						if(elements[0].id % 2 == 0){
-							var temp = ((Math.ceil(elements[0].id/2) - 1) * (200) - 280);
-						}else{
 							var temp = ((Math.ceil(elements[0].id/2) - 1) * (200) - 180);
+						}else{
+							var temp = ((Math.ceil(elements[0].id/2) - 1) * (200) - 280);
 						}
 						return temp;
 					}
@@ -302,6 +302,9 @@ var users = {
 		console.log(elements);
 		$(elements)
             .velocity({ 
+            	translateY: [ 
+                             function() { return "+=" + 400 },
+                         ],
                 translateZ: [
 					1
                 ],
@@ -315,7 +318,23 @@ var users = {
                 
                 
             },{ duration: 3000, complete: function(elements) { 
-				//doNextAgain(elements); 
+				spin(elements, 8); 
+			}})
+        .appendTo($container);
+		
+	}
+	
+	function spin(elements, index){
+		
+		$(elements)
+            .velocity({ 
+                translateY: [ 
+                             function() { return "-=" + 1800 },
+                         ]
+                
+                
+            },{ duration: 3000, complete: function(elements) { 
+            	spin(elements); 
 			}})
         .appendTo($container);
 		
