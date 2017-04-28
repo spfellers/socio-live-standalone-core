@@ -196,8 +196,14 @@ var users = {
                 opacity: [ 
                     function() { return Math.random() + 0.1 },
                     function() { return Math.random() + 0.2 }
-                ]
-            },{ duration: 2000, loop: 1, complete: function(elements) { 
+                ],
+                
+            },{ duration: 6000, loop: true,    progress: function(elements, c, r, s, t) {
+            	$( "#box" ).click(function() {
+            		$(elements).velocity("stop");
+            		onHit(elements);
+            	});
+            }, complete: function(elements) { 
                // putDots();
             	//onHit();
             	onHit(elements);
@@ -251,7 +257,7 @@ var users = {
 					doNext(elements); 
 					}
 				})
-			.appendTo($container);
+			//.appendTo($container);
 
 
 	}
@@ -278,7 +284,7 @@ var users = {
             },{ duration: 4000, complete: function(elements) { 
 				bringTogether(elements); 
 			}})
-        .appendTo($container);
+       // .appendTo($container);
 		
 	}
 	
@@ -293,7 +299,7 @@ var users = {
             },{ duration: 3000, complete: function(elements) { 
 				zoomIn(elements); 
 			}})
-        .appendTo($container);
+        //.appendTo($container);
 		
 	}
 	
@@ -308,19 +314,19 @@ var users = {
                 translateZ: [
 					1
                 ],
-                backgroundColor: [
-					function(){
-						if(elements[0].id == 8){
-							return "#174ADF"
-						}
-					}
-                ]
+               // backgroundColor: [
+				//	function(){
+				//		if(elements[0].id == 8){
+				//			return "#174ADF"
+				//		}
+				//	}
+               // ]
                 
                 
             },{ duration: 3000, complete: function(elements) { 
 				spin(elements, 8); 
 			}})
-        .appendTo($container);
+        //.appendTo($container);
 		
 	}
 	
@@ -336,7 +342,7 @@ var users = {
             },{ duration: 3000, complete: function(elements) { 
             	spin(elements); 
 			}})
-        .appendTo($container);
+      //  .appendTo($container);
 		
 	}
 	function getPos() {

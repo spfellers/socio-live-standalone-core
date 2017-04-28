@@ -100,4 +100,16 @@
             top: 15%;
             transform: translateY(-15%); 
         }
-    </style>
+        
+        #box {
+        	position: absolute;
+    		top: 125px;
+    		right: 54px;
+    		font-size: 35px;
+    		color: lightGrey;
+        }
+        
+        #box:hover {
+        	color: white;
+			cursor: pointer;
+        }
