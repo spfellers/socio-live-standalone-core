@@ -91,9 +91,11 @@ var users = {
 
     /* Differentiate dot counts based on roughly-guestimated device and browser capabilities. */ 
 	var dotsCount,
+		currDot,
 		dotsHtml = "",
 		$count = $("#count"),
-		$dots;
+		$dots,
+		$dotArr = [];
 
 	if (window.location.hash) {
 		dotsCount = window.location.hash.slice(1);
@@ -104,11 +106,15 @@ var users = {
 	for (var i = 1; i < 26; i++) {
 		//check if line is going to run off div
 		if(users[i].info.split(' ')[0].length < 19){
-			dotsHtml += "<div class='dot' id=" + i + " ><span class='dotName'>" + users[i].first + " " + users[i].last + "</span></br>" +
+			currDot = "<div class='dot' id=" + i + " ><span class='dotName'>" + users[i].first + " " + users[i].last + "</span></br>" +
 			"<span class='dotName'>" + users[i].info + "</span></div>";
+			dotsHtml += currDot;
+			$dotArr[i] = $(currDot);
 		}else{
-			dotsHtml += "<div class='dot' id=" + i + " ><span class='dotName'>" + users[i].first + " " + users[i].last + "</span></br>" +
-			"<span class='dotInfo'>" + users[i].info + "</span></div>";
+			currDot = "<div class='dot' id=" + i + " ><span class='dotName'>" + users[i].first + " " + users[i].last + "</span></br>" +
+			"<span class='dotInfo'>" + users[i].info + "</span></div>"
+			dotsHtml += currDot;
+			$dotArr[i] = $(currDot);
 		}
 	}
 
@@ -132,7 +138,7 @@ var users = {
 		translateZMax = 40;
 
 	var containerAnimationMap = {
-			perspective: [ 215, 50 ],
+			perspective: [ 215, 40 ],
 			opacity: [ 0.90, 0.55 ]
 		};
 
@@ -152,20 +158,78 @@ var users = {
 
     /* Fade out the welcome message. */
 	$welcome.velocity({ opacity: [ 0, 0.65 ] }, { delay: 3500, duration: 1100 });
-	onHit();
+	//onHit();
 	putDots();
 	function putDots(){
 	/* Animate the dots' container. */
 	$container
 		.css("perspective-origin", screenWidth/2 + "px " + ((screenHeight * 0.45) - chromeHeight) + "px")
-		.velocity(containerAnimationMap, { duration: 1600, loop: 20, delay: 15050 });
+		.velocity(containerAnimationMap, { duration: 800, loop: 1, delay: 1050 });
 
 	/* Special visual enhancement for WebKit browsers, which are faster at box-shadow manipulation. */
 	if (isWebkit) {
 		$dots.css("boxShadow", "0px 0px 4px 0px #4bc2f1");
 	}
-	getPos();
+	//onHit();
+	//getPos();
 	/* Animate the dots. */
+	/*
+	$dotArr[1].
+	velocity({ 
+		translateX: [ 
+			function() { return "+=" + 5 }
+		],
+		translateY: [
+			function() { return "+=" + 5 },
+		],
+		opacity: [ 
+			1
+		]
+	})
+	.appendTo($container);
+	var b = 6
+	$dotArr[2].
+	velocity({ 
+		translateX: [ 
+			function() { return "+=" + 5 }
+		],
+		translateY: [
+			function() { return "+=" + 105 },
+		],
+		opacity: [ 
+			1
+		]
+	})
+	.appendTo($container);
+	var currY;
+	$dotArr[3].
+	velocity({ 
+		translateX: [ 
+			function() { return "+=" + 5 }
+		],
+		translateY: [
+			function() { return "+=" + 205 }
+		],
+		opacity: [ 
+			1
+		]
+	})
+	.appendTo($container);
+	$dotArr[3].
+	velocity({ 
+		translateX: [ 
+			function() { return "+=" + 1005 }
+		],
+		translateY: [
+			function() { return "+=" + 0 }
+		],
+		opacity: [ 
+			1
+		]
+	})
+	.appendTo($container);
+	*/
+	
 	$dots
 	//.velocity({ opacity: [ 0.35, 0.65 ] }, { duration: 500 })
 		.velocity({ 
@@ -192,30 +256,47 @@ var users = {
 	})
 	.appendTo($container);
 	
+
+	
 }
 	
 	function onHit(){
-		//can we determine collision of 2 css elements, namely $dots
-		$dots
-			.velocity({ 
+		for(var i = 1; i < 26; i++){
+			console.log(i);
+			$dotArr[i].
+			velocity({ 
 				translateX: [ 
-					helpX($dots.id)
+					function() { 
+						if(i % 2 == 0){
+							var temp = screenWidth - 170;
+							console.log("temp = " + temp);
+							return "+=" + temp; 
+						}else{
+							return "+=" + 5;
+						}
+					}
 				],
 				translateY: [
-					helpY($dots.id)
+					function() { 
+						//80 is height of box
+						var temp = (Math.ceil(i/2) - 1) * (100);
+						console.log("temp = " + temp);
+						return "+=" + temp;
+					}
 				],
 				translateZ: [
-					function() { return 0 }
+				    function() { 
+				    //based on people
+				    var temp = (-1 * 50);
+					return "+=" + temp;
+					}
 				],
 				opacity: [ 
 					1
 				]
-			}, { duration: 15000, complete: function() { 
-				//return to start of anim
-				putDots();
-			}
-		})
-		.appendTo($container);
+			})
+			.appendTo($container);
+		}
 
 	}
 	function getPos() {
